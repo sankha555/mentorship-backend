@@ -7,7 +7,6 @@ from app.utils.validation_utils import (
     get_stripped_string,
 )
 
-from typing import Union, Dict
 # Field character limit
 
 NAME_MAX_LENGTH = 30
@@ -27,7 +26,7 @@ INTERESTS_MAX_LENGTH = 150
 SOCIALS_MAX_LENGTH = 400
 
 
-def validate_user_registration_request_data(data: Dict[str, str]) -> Union[str, bool]:
+def validate_user_registration_request_data(data):
     # Verify if request body has required fields
     if "name" not in data:
         return messages.NAME_FIELD_IS_MISSING
@@ -93,7 +92,7 @@ def validate_user_registration_request_data(data: Dict[str, str]) -> Union[str, 
     return {}
 
 
-def validate_resend_email_request_data(data: Dict[str, str]) -> Union[str, dict]:
+def validate_resend_email_request_data(data):
     # Verify if request body has required fields
     if "email" not in data:
         return messages.EMAIL_FIELD_IS_MISSING
@@ -105,7 +104,7 @@ def validate_resend_email_request_data(data: Dict[str, str]) -> Union[str, dict]
     return {}
 
 
-def validate_update_profile_request_data(data: Dict[str, str]) -> Union[str, dict, bool]:
+def validate_update_profile_request_data(data):
     # todo this does not check if non expected fields are being sent
 
     if not data:
@@ -218,7 +217,7 @@ def validate_update_profile_request_data(data: Dict[str, str]) -> Union[str, dic
     return {}
 
 
-def validate_new_password(data: Dict[str, str]) -> Union[str, dict, bool]:
+def validate_new_password(data):
     if "current_password" not in data:
         return messages.CURRENT_PASSWORD_FIELD_IS_MISSING
     if "new_password" not in data:

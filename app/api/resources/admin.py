@@ -8,10 +8,6 @@ from app.api.models.admin import *
 from app.api.dao.admin import AdminDAO
 from app.api.resources.common import auth_header_parser
 
-from typing import Tuple, List, Dict, Union, Type, TypeVar
-
-HttpResponseAlias = TypeVar('http.client.HTTPResponse') #Class Name of the HttpResponse Class for HTTPStatus responses
-
 admin_ns = Namespace("Admins", description="Operations related to Admin users")
 add_models_to_namespace(admin_ns)
 
@@ -36,7 +32,7 @@ class AssignNewUserAdmin(Resource):
     @admin_ns.expect(
         auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True
     )
-    def post(cls) -> Tuple[str, Type[HttpResponseAlias]]:
+    def post(cls):
         """
         Assigns a User as a new Admin.
 
@@ -73,7 +69,7 @@ class RevokeUserAdmin(Resource):
     @admin_ns.expect(
         auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True
     )
-    def post(cls) -> Tuple[str, Type[HttpResponseAlias]]:
+    def post(cls):
         """
         Revoke admin status from another User Admin.
 
@@ -105,7 +101,7 @@ class ListAdmins(Resource):
     )
     @admin_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_IS_NOT_AN_ADMIN)
     @admin_ns.expect(auth_header_parser)
-    def get(cls) -> Union[Tuple[List[Dict[str, str]], str], Tuple[str, Type[HttpResponseAlias]]]:
+    def get(cls):
         """
         Returns all admin users.
 

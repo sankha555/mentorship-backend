@@ -5,7 +5,7 @@ from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 from http import HTTPStatus
 
-def validate_data_for_task_comment(user_id: int, task_id: int, relation_id: int):
+def validate_data_for_task_comment(user_id, task_id, relation_id):
     relation = MentorshipRelationModel.find_by_id(relation_id)
     if relation is None:
         return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
@@ -28,7 +28,7 @@ class TaskCommentDAO:
 
     @staticmethod
     @email_verification_required
-    def create_task_comment(user_id: int, task_id: int, relation_id: int, comment: str):
+    def create_task_comment(user_id, task_id, relation_id, comment):
         """Creates a new task comment.
 
         Creates a new task comment with provided data.
@@ -58,7 +58,7 @@ class TaskCommentDAO:
 
     @staticmethod
     @email_verification_required
-    def get_task_comment(user_id: int, _id: int):
+    def get_task_comment(user_id, _id):
         """Returns the task comment suing specified id.
 
         Arguments:
@@ -79,7 +79,7 @@ class TaskCommentDAO:
 
     @staticmethod
     @email_verification_required
-    def get_all_task_comments_by_task_id(user_id: int, task_id: int, relation_id: int):
+    def get_all_task_comments_by_task_id(user_id, task_id, relation_id):
         """Returns all the task comments using specified task id.
 
         Arguments:
@@ -102,7 +102,7 @@ class TaskCommentDAO:
 
     @staticmethod
     @email_verification_required
-    def get_all_task_comments_by_user_id(user_id: int):
+    def get_all_task_comments_by_user_id(user_id):
         """Returns all the task comments using specified user id.
 
         Arguments:
@@ -118,7 +118,7 @@ class TaskCommentDAO:
 
     @staticmethod
     @email_verification_required
-    def modify_comment(user_id: int, _id: int, task_id: int, relation_id: int, comment: str):
+    def modify_comment(user_id, _id, task_id, relation_id, comment):
         """Modifies comment to a new one.
 
         Arguments:
@@ -158,7 +158,7 @@ class TaskCommentDAO:
 
     @staticmethod
     @email_verification_required
-    def delete_comment(user_id: int, _id: int, task_id: int, relation_id: int):
+    def delete_comment(user_id, _id, task_id, relation_id):
         """Deletes comment specified by id.
 
         Arguments:

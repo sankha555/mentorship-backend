@@ -3,7 +3,6 @@ from datetime import datetime
 from app.api.validations.task_comment import COMMENT_MAX_LENGTH
 from app.database.sqlalchemy_extension import db
 
-from typing import Dict
 
 class TaskCommentModel(db.Model):
     """Defines attributes for the task comment.
@@ -39,7 +38,7 @@ class TaskCommentModel(db.Model):
         # default fields
         self.creation_date = datetime.now().timestamp()
 
-    def json(self) -> Dict[str, str]:
+    def json(self):
         """Returns information of task comment as a JSON object."""
         return {
             "id": self.id,
@@ -60,7 +59,7 @@ class TaskCommentModel(db.Model):
         )
 
     @classmethod
-    def find_by_id(cls, _id: int):
+    def find_by_id(cls, _id):
         """Returns the task comment that has the passed id.
            Args:
                 _id: The id of the task comment.
@@ -68,7 +67,7 @@ class TaskCommentModel(db.Model):
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
-    def find_all_by_task_id(cls, task_id: int, relation_id: int):
+    def find_all_by_task_id(cls, task_id, relation_id):
         """Returns all task comments that has the passed task id.
            Args:
                 task_id: The id of the task.
@@ -77,14 +76,14 @@ class TaskCommentModel(db.Model):
         return cls.query.filter_by(task_id=task_id, relation_id=relation_id).all()
 
     @classmethod
-    def find_all_by_user_id(cls, user_id: int):
+    def find_all_by_user_id(cls, user_id):
         """Returns all task comments that has the passed user id.
            Args:
                 user_id: The id of the user.
         """
         return cls.query.filter_by(user_id=user_id).all()
 
-    def modify_comment(self, comment: str):
+    def modify_comment(self, comment):
         """Changes the comment and the modification date.
            Args:
                 comment: New comment.

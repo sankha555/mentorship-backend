@@ -9,5 +9,5 @@ class MentorshipRelationState(IntEnum):
     CANCELLED = 4
     COMPLETED = 5
 
-    def values(self) -> list:
+    def values(self):
         return list(map(int, self))
