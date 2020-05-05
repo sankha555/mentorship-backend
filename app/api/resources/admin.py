@@ -33,7 +33,7 @@ class AssignNewUserAdmin(Resource):
     @admin_ns.expect(
         auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True
     )
-    def post(cls) -> Tuple[str, int]:
+    def post(cls) -> Tuple[Dict[str, str], int]:
         """
         Assigns a User as a new Admin.
 
@@ -70,7 +70,7 @@ class RevokeUserAdmin(Resource):
     @admin_ns.expect(
         auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True
     )
-    def post(cls) -> Tuple[str, int]:
+    def post(cls) -> Tuple[Dict[str, str], int]:
         """
         Revoke admin status from another User Admin.
 
@@ -102,7 +102,7 @@ class ListAdmins(Resource):
     )
     @admin_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_IS_NOT_AN_ADMIN)
     @admin_ns.expect(auth_header_parser)
-    def get(cls) -> Union[Tuple[str, int], Tuple[list, int]]:
+    def get(cls) -> Union[Tuple[Dict[str, str], int], Tuple[list, int]]:
         """
         Returns all admin users.
 

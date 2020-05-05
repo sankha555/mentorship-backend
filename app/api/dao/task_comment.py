@@ -7,7 +7,7 @@ from http import HTTPStatus
 
 from typing import Tuple, Union, Dict, List
 
-def validate_data_for_task_comment(user_id: int, task_id: int, relation_id: int) -> Union[Tuple[str, int], dict]:
+def validate_data_for_task_comment(user_id: int, task_id: int, relation_id: int) -> Union[Tuple[Dict[str, str], int], dict]:
     relation = MentorshipRelationModel.find_by_id(relation_id)
     if relation is None:
         return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
@@ -30,7 +30,7 @@ class TaskCommentDAO:
 
     @staticmethod
     @email_verification_required
-    def create_task_comment(user_id: int, task_id: int, relation_id: int, comment: str) -> Union[Tuple[str, int], dict]:
+    def create_task_comment(user_id: int, task_id: int, relation_id: int, comment: str) -> Union[Tuple[Dict[str, str], int], dict]:
         """Creates a new task comment.
 
         Creates a new task comment with provided data.
@@ -60,7 +60,7 @@ class TaskCommentDAO:
 
     @staticmethod
     @email_verification_required
-    def get_task_comment(user_id: int, _id: int) -> Union[Tuple['TaskCommentModel',int], Tuple[str, int]]:
+    def get_task_comment(user_id: int, _id: int) -> Union[Tuple['TaskCommentModel',int], Tuple[Dict[str, str], int]]:
         """Returns the task comment suing specified id.
 
         Arguments:
@@ -120,7 +120,7 @@ class TaskCommentDAO:
 
     @staticmethod
     @email_verification_required
-    def modify_comment(user_id: int, _id: int, task_id: int, relation_id: int, comment: str) -> Union[dict, Tuple[str, int]]:
+    def modify_comment(user_id: int, _id: int, task_id: int, relation_id: int, comment: str) -> Union[dict, Tuple[Dict[str, str], int]]:
         """Modifies comment to a new one.
 
         Arguments:
@@ -160,7 +160,7 @@ class TaskCommentDAO:
 
     @staticmethod
     @email_verification_required
-    def delete_comment(user_id: int, _id: int, task_id: int, relation_id: int) -> Union[dict, Tuple[str, int]]:
+    def delete_comment(user_id: int, _id: int, task_id: int, relation_id: int) -> Union[dict, Tuple[Dict[str, str], int]]:
         """Deletes comment specified by id.
 
         Arguments:

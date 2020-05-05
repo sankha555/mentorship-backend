@@ -15,7 +15,10 @@ from app.api.validations.user import *
 from app.api.email_utils import send_email_verification_message
 from app.api.models.user import *
 from app.api.dao.user import UserDAO
+from app.database.models.user import UserModel
 from app.api.resources.common import auth_header_parser
+
+from typing import Tuple, Dict, Union
 
 users_ns = Namespace("Users", description="Operations related to users")
 add_models_to_namespace(users_ns)
@@ -47,7 +50,7 @@ class UserList(Resource):
     )
     @users_ns.marshal_list_with(public_user_api_model)
     @users_ns.expect(auth_header_parser)
-    def get(cls):
+    def get(cls) -> Tuple[list, int]:
         """
         Returns list of all the users whose names contain the given query.
 
@@ -80,7 +83,7 @@ class OtherUser(Resource):
         ),
     )
     @users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
-    def get(cls, user_id):
+    def get(cls, user_id: int) -> Union[Tuple[Dict[str, str], int], str, dict]:
         """
         Returns a user.
 
@@ -98,7 +101,7 @@ class OtherUser(Resource):
             return marshal(requested_user, public_user_api_model), HTTPStatus.CREATED
 
     @staticmethod
-    def validate_param(user_id):
+    def validate_param(user_id: int) -> bool:
         return isinstance(user_id, int)
 
 
@@ -119,7 +122,7 @@ class MyUserProfile(Resource):
     @users_ns.doc("get_user")
     @users_ns.expect(auth_header_parser, validate=True)
     @users_ns.marshal_with(full_user_api_model)  # , skip_none=True
-    def get(cls):
+    def get(cls) -> UserModel:
         """
         Returns details of current user.
 
@@ -135,7 +138,7 @@ class MyUserProfile(Resource):
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
     @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_SUCCESSFULLY_UPDATED)
     @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
-    def put(cls):
+    def put(cls) -> Union[Tuple[Dict[str, str], int], Tuple[str, int], Tuple[bool, int]]:
         """
         Updates user profile
 
@@ -161,7 +164,7 @@ class MyUserProfile(Resource):
     @users_ns.doc("delete_user")
     @users_ns.expect(auth_header_parser, validate=True)
     @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_SUCCESSFULLY_DELETED)
-    def delete(cls):
+    def delete(cls) -> Tuple[Dict[str, str], int]:
         """
         Deletes user.
 
@@ -192,7 +195,7 @@ class ChangeUserPassword(Resource):
     @users_ns.expect(
         auth_header_parser, change_password_request_data_model, validate=True
     )
-    def put(cls):
+    def put(cls) -> Tuple[Dict[str, str], int]:
         """
         Updates the user's password
 
@@ -231,7 +234,7 @@ class VerifiedUser(Resource):
     )
     @users_ns.marshal_list_with(public_user_api_model)  # , skip_none=True
     @users_ns.expect(auth_header_parser)
-    def get(cls):
+    def get(cls) -> Tuple[list, int]:
         """
         Returns all verified users whose names contain the given query.
 
@@ -259,7 +262,7 @@ class UserRegister(Resource):
         ),
     )
     @users_ns.expect(register_user_api_model, validate=True)
-    def post(cls):
+    def post(cls) -> Union[Tuple[dict, int], Tuple[list, int], Tuple[Dict[str, str], int]]:
         """
         Creates a new user.
 
@@ -297,7 +300,7 @@ class UserRegister(Resource):
 @users_ns.param("token", "Token sent to the user's email")
 class UserEmailConfirmation(Resource):
     @classmethod
-    def get(cls, token):
+    def get(cls, token: str) -> Tuple[Dict[str, str], int]:
         """Confirms the user's account.
 
         This endpoint is called when a new user clicks the verification link
@@ -317,7 +320,7 @@ class UserEmailConfirmation(Resource):
 class UserResendEmailConfirmation(Resource):
     @classmethod
     @users_ns.expect(resend_email_request_body_model)
-    def post(cls):
+    def post(cls) -> Tuple[Dict[str, str], int]:
         """Sends the user a new verification email.
 
         This endpoint is called when a user wants the verification email to be
@@ -360,7 +363,7 @@ class RefreshUser(Resource):
         ),
     )
     @users_ns.expect(auth_header_parser)
-    def post(cls):
+    def post(cls) -> Tuple[Dict[str, str], int]:
         """Refresh user's access
 
         The return value is an access token and the expiry timestamp.
@@ -394,7 +397,7 @@ class LoginUser(Resource):
     @users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN)
     @users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.WRONG_USERNAME_OR_PASSWORD)
     @users_ns.expect(login_request_body_model)
-    def post(cls):
+    def post(cls) -> Tuple[Dict[str, str], int]:
         """
         Login user
 
@@ -463,7 +466,7 @@ class UserHomeStatistics(Resource):
     @classmethod
     @jwt_required
     @users_ns.expect(auth_header_parser)
-    def get(cls):
+    def get(cls) -> Tuple[Dict[str, str], int]:
         """Get Statistics regarding the current user
 
         Returns:
@@ -486,7 +489,7 @@ class UserDashboard(Resource):
     @classmethod
     @jwt_required
     @users_ns.expect(auth_header_parser)
-    def get(cls):
+    def get(cls) -> Tuple[Dict[str, str], int]:
         """Get current User's dashboard
 
         Returns:
