@@ -8,7 +8,7 @@ import config
 from app.api.mail_extension import mail
 
 
-def generate_confirmation_token(email):
+def generate_confirmation_token(email: str):
     """Serializes and signs an email address into token with an expiry."""
     from run import application
 
